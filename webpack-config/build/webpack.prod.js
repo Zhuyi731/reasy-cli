@@ -8,18 +8,19 @@ const baseConfig = require("./webpack.base");
 
 
 module.exports = merge(baseConfig, {
-	plugins: [
-		new uglifyJs({
-			cache:'node_modules/.cache/',
-			parallel: 3,
-			uglifyOptions: {
-				ie8: true
-			}
-		}),
-		new cleanDist(["publish/*"], {
-			root: path.join(__dirname,"../"),
-			verbose: true,
-			dry: false
-		})
-	]
+    mode: "production",
+    plugins: [
+        new uglifyJs({
+            cache: 'node_modules/.cache/',
+            parallel: 3,
+            uglifyOptions: {
+                ie8: true
+            }
+        }),
+        new cleanDist(["dist/*"], {
+            root: path.join(__dirname, "../"),
+            verbose: true,
+            dry: false
+        })
+    ]
 });
