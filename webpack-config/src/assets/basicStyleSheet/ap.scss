@@ -1,0 +1,88 @@
+$menuBg:#fff;
+
+.main-container {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
+/**
+* 侧边栏菜单样式 START
+*/
+#menu-aside {
+    
+    .nav-menu {
+        width: 180px;
+        height: 100%;
+        background: $menuBg;
+        border-radius: 4px;
+        position: relative;
+    }
+
+    .nav-content {
+        width: 180px;
+        margin-top: 20px;
+        border-top: 1px solid #f2f2f2;
+
+        .active {
+            display: block;
+            color: #fff;
+            background: #ed7020;
+        }
+    }
+
+    .nav-list {
+        border-bottom: 1px solid #f2f2f2;
+
+        a {
+            display: block;
+            height: auto;
+            color: #333;
+            padding: 9px 0 9px 0;
+            /* For ie7 */
+            *zoom: 1;
+        }
+
+        .nav-list {
+            ul li {
+                padding: 5px 0 4px 55px;
+                border-bottom: 1px solid #fff;
+            }
+
+            a {
+                padding: 13px 5px 13px 50px;
+                color: #666;
+                border-top: none;
+                border-bottom: none;
+                vertical-align: middle;
+            }
+
+            .nav-list>ul {
+                background: #f2f2f2;
+            }
+
+            .active {
+                display: block;
+                color: #fff;
+                background: #ed7020;
+                /* For ie6 */
+                _display: inline;
+                zoom: 1;
+            }
+
+            .menu-text-blur {
+                color: #ed7020;
+            }
+
+            .active>a {
+                color: #fff;
+            }
+        }
+    }
+}
+
+/**
+* 侧边栏菜单样式 END
+*/
