@@ -22,6 +22,10 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-empty:before {
+    content: "";
+}
+
 .icon-luyouqi:before {
     content: "\e68c";
 }

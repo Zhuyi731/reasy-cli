@@ -1,87 +1,147 @@
-$menuBg:#fff;
+//头部设定
+$mainColor:#F60;
+
+//内容框宽度
+$contentWidth:600px;
+$contentMinHeight:500px;
+$asideWidth:180px;
+
+/* 表单组件样式定义 START */
+/* 表单组件样式定义 END */
+body {
+    background: #d7d7d7;
+    min-width: 1200px;
+}
+
+.main-header {
+    height: 40px;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: $mainColor;
+
+    .head-logo {
+        background-size: contain;
+        display: block;
+        width: 106px;
+        height: 24px;
+        margin-left: 200px;
+        margin-top: 5px;
+    }
+}
 
 .main-container {
-    width: 100%;
+    width: $contentWidth+$asideWidth+40px;
     height: 100%;
-    margin: 0;
+    min-height: 600px;
+    position: relative;
+    left: 0;
+    top: 0;
+    margin: 0 auto;
+    margin-top: 60px;
     padding: 0;
+
+
+    .menu-aside {
+        width: $asideWidth;
+        min-height: $contentMinHeight;
+        float:left;
+    }
+
+    .main-page {
+        display: block;
+        min-width: $contentWidth;
+        margin-left: 40px;
+        border-radius: 4px;
+        background: #fff;
+        min-height: $contentMinHeight;
+        float: left;
+    }
 }
+
+
+
+
 
 
 /**
 * 侧边栏菜单样式 START
 */
-#menu-aside {
-    
-    .nav-menu {
-        width: 180px;
-        height: 100%;
-        background: $menuBg;
-        border-radius: 4px;
-        position: relative;
-    }
+// #menu-aside {
+//     border-radius: 4px;
+//     width: $menuWidth;
+//     background: $menuBg;
 
-    .nav-content {
-        width: 180px;
-        margin-top: 20px;
-        border-top: 1px solid #f2f2f2;
 
-        .active {
-            display: block;
-            color: #fff;
-            background: #ed7020;
-        }
-    }
+//     .menu-content {
+//         height: 46px;
+//         line-height: 46px;
+//         position: relative;
+//     }
 
-    .nav-list {
-        border-bottom: 1px solid #f2f2f2;
+//     .menu-icon {
+//         display: inline-block;
+//         font-weight: bold;
+//         position: absolute;
+//         top: 0;
+//     }
 
-        a {
-            display: block;
-            height: auto;
-            color: #333;
-            padding: 9px 0 9px 0;
-            /* For ie7 */
-            *zoom: 1;
-        }
+//     .menu-a {
+//         position: absolute;
+//         top: 0;
+//         display: inline-block;
+//         height: 46px;
+//         line-height: 46px;
+//         color: #333;
+//         text-decoration: none;
+//         margin-left: 10px;
+//     }
 
-        .nav-list {
-            ul li {
-                padding: 5px 0 4px 55px;
-                border-bottom: 1px solid #fff;
-            }
+//     @for $i from 1 through 3 {
+//         $config: nth($menuConfig, $i);
 
-            a {
-                padding: 13px 5px 13px 50px;
-                color: #666;
-                border-top: none;
-                border-bottom: none;
-                vertical-align: middle;
-            }
+//         .menu-content-#{$i} {
+//             height: map-get($map: $config, $key: height);
+//             line-height: map-get($map: $config, $key: height);
+//         }
 
-            .nav-list>ul {
-                background: #f2f2f2;
-            }
+//         .menu-icon-#{$i} {
+//             width: map-get($map:$config, $key:iconSize);
+//             height: map-get($map: $config, $key:height);
+//             line-height: map-get($map: $config, $key:height);
+//             font-size: map-get($map:$config, $key:iconSize);
+//             left: map-get($map:$config, $key:iconMarginLeft);
+//         }
 
-            .active {
-                display: block;
-                color: #fff;
-                background: #ed7020;
-                /* For ie6 */
-                _display: inline;
-                zoom: 1;
-            }
+//         .menu-a-#{$i} {
+//             height: map-get($map: $config, $key: height);
+//             line-height: map-get($map: $config, $key: height);
+//             font-size: map-get($map:$config, $key:fontSize);
+//             left: map-get($map: $config, $key:iconMarginLeft) + 20px;
+//         }
 
-            .menu-text-blur {
-                color: #ed7020;
-            }
+//         .menu-ul-#{$i} {
+//             max-height: 0;
+//             overflow: hidden;
+//             transition: 1s max-height;
+//         }
+//     }
 
-            .active>a {
-                color: #fff;
-            }
-        }
-    }
-}
+//     .menu-ul-1 {
+//         max-height: 100%;
+//     }
+
+
+//     .menu-li {
+//         border-top: 1px solid #DCDFE6;
+//     }
+
+//     .menu-ul {
+//         width: 180px;
+//     }
+// }
 
 /**
 * 侧边栏菜单样式 END
