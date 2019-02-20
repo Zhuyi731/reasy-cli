@@ -1,6 +1,7 @@
 module.exports = {
+    "parser": "babel-eslint",
     "parserOptions": {
-        "ecmaVersion": 6, //兼容ES6
+        "ecmaVersion": 7, //兼容ES6
         "sourceType": "module"
     },
     "env": {
@@ -31,13 +32,13 @@ module.exports = {
          *warm||1 代表抛出Error，不会使编译退出
          *error||2代表抛出错误，会导致编译退出
          *其中增加了process.env.NODE_ENV变量
-         *process.env.NODE_ENV==='publish'表示发布环境
-         *process.env.NODE_ENV==='dev'表示开发调试环境，可以通过这个来配置不同环境下的检查项
+         *process.env.NODE_ENV==='production'表示发布环境
+         *process.env.NODE_ENV==='development'表示开发调试环境，可以通过这个来配置不同环境下的检查项
          */
         //详细文档       http://eslint.cn/docs/rules
         "quotes": [0, "double"], //引号类型  强制 "" '' 
         "semi": [1, "always"], //语句强制分号结尾
-        "no-console": 2, //不允许console  建议调试环境关闭 
+        "no-console": process.env.NODE_ENV === 'development' ? 0 : 0, //不允许console  建议调试环境关闭 
         //TODO 不清楚什么意思 by pjl
         "no-alert": 0, //禁止使用alert confirm prompt
         "no-cond-assign": 2, //禁止在条件表达式中使用赋值语句
