@@ -1,14 +1,13 @@
 /*eslint-disable*/
 const path = require("path");
-const webpack = require('webpack');
 const es3ifyPlugin = require('es3ify-webpack-plugin'); //解决IE8保留字冲突问题
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //自动生成html
 const CopyWebpackPlugin = require('copy-webpack-plugin'); //将特定文件输出指定位置
 
 module.exports = {
     resolve: {
-        extensions: ['.js'],
-        alias: {
+        extensions: ['.js', ".json"],
+        alias: { //设置别名，方便引入文件
             "@modules": path.join(__dirname, "../src/modules"),
             "@components": path.join(__dirname, "../src/components"),
             "@assets": path.join(__dirname, "../src/assets"),
@@ -19,15 +18,16 @@ module.exports = {
     },
     output: {
         path: path.resolve('./dist'),
-        filename: '[name]_[chunkhash:5].js'
+        filename: '[name]_[chunkhash:5].js',
+        chunkFilename: "chunks/[name]_[chunkhash:5].js"
     },
     module: {
         rules: [{
-            enforce: 'pre', // ESLint 优先级高于其他 JS 相关的 loader
-            test: /\.js$/,
-            exclude: /node_modules|assets/,
-            use: "eslint-loader"
-        }, {
+            //     enforce: 'pre', // ESLint 优先级高于其他 JS 相关的 loader
+            //     test: /\.js$/,
+            //     exclude: /node_modules|assets/,
+            //     use: "eslint-loader"
+            // }, {
             test: /\.js$/, //匹配所有.js文件
             use: [{
                 loader: 'babel-loader?cacheDirectory=true',
@@ -36,11 +36,11 @@ module.exports = {
                         "@babel/preset-env"
                     ],
                     plugins: [
-                        ["@babel/plugin-proposal-class-properties"]
+                        "@babel/plugin-syntax-dynamic-import"
                     ]
                 }
             }],
-            exclude: /node_modules|jquery|lodash/
+            exclude: /node_modules/ //排除node_module下的所有文件
         }, {
             test: /\.css$/,
             use: [{
@@ -60,11 +60,27 @@ module.exports = {
                 loader: "fast-sass-loader" // compiles Sass to CSS 
             }]
         }, {
+            test: /\.(png|jpg|png|jpeg|bmp|webp)$/, //处理css和js中的图片文件
+            loader: 'url-loader',
+            options: {
+                limit: 20,
+                name: 'assets/images/[name]_[hash:5].[ext]'
+            }
+        }, {
+            test: /\.(html)$/, //处理html中的图片文件
+            use: {
+                loader: 'html-loader',
+                options: {
+                    attrs: ['img:src', 'img:data-src', 'audio:src'],
+                    minimize: true
+                }
+            }
+        }, { //处理字体文件
             test: /\.(eot|woff2|woff|ttf|svg)/,
             use: [{
                 loader: 'url-loader',
                 options: {
-                    name: '[name][hash:5].min.[ext]',
+                    name: 'assets/fonts/[name]_[hash:5].min.[ext]',
                     limit: 5000,
                     publicPath: '',
                     outputPath: 'dist/',
@@ -74,7 +90,7 @@ module.exports = {
         }]
     },
     plugins: [
-        // new es3ifyPlugin(),
+        new es3ifyPlugin(),
         new HtmlWebpackPlugin({
             template: path.join(__dirname, '../src/modules/index/index.html'),
             filename: "index.html",
@@ -82,11 +98,11 @@ module.exports = {
             inject: "body"
         }),
         new CopyWebpackPlugin([{ //reference from：https://www.npmjs.com/package/copy-webpack-plugin
-            from: './src/module/**/*.html',
+            from: './src/modules/**/!(login|index|quickset).html', //TO REPLACE
             to: './pages',
             flatten: true
         }, {
-            from: './src/module/**/*.mock.js',
+            from: './src/modules/**/*.mock.js',
             to: './mock',
             flatten: true
         }, {

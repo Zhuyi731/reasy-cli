@@ -21,6 +21,11 @@ module.exports = merge(baseConfig, {
             root: path.join(__dirname, "../"),
             verbose: true,
             dry: false
+        }),
+        new webpack.DefinePlugin({
+            'process.env': {
+                'NODE_ENV': JSON.stringify('production')
+            }
         })
     ]
 });
