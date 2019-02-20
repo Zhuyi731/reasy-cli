@@ -5,47 +5,24 @@ const productInfo = {
     menus: [{
         title: "11111111aa",
         icon: "luyouqi",
-        path: "/moduleA/aa",
-        template: "moduleA",
-        module: cb => {
-            require.ensure([], require => {
-                cb(require("@modules/moduleA/moduleA.js"));
-            }, "moduleA");
-        },
         children: [{
             title: "222bb",
-            template: "moduleB",
             path: "/moduleA/bb",
-            children: [{
-                title: "333xx",
-                path: "/moduleA/xx",
-            }]
+            icon: "luyouqi"
         }, {
             path: "/moduleA/cc",
-            title: "222222cc",
+            title: "222222cc"
         }]
     }, {
         title: "11111112dd",
-        template: "moduleB",
         path: "/moduleA/dd",
-        module: cb => {
-            require.ensure([], require => {
-                cb(require("@modules/moduleA/moduleA.js"));
-            }, "moduleA");
-        }
+        icon: "guanbi"
     }, {
         title: "111111113ee",
-        template: "moduleA",
-        path: "/moduleA/ee",
-        module: cb => {
-            require.ensure([], require => {
-                cb(require("@modules/moduleA/moduleA.js"));
-            }, "moduleA");
-        },
+        icon: "zidingyi",
         children: [{
             path: "/moduleA/ff",
-            title: "222",
-            template: "moduleA",
+            title: "222"
         }]
     }]
 };
