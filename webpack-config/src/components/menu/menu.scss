@@ -1,0 +1,89 @@
+$menuConfig:((iconSize:26px, iconColor:#333, fontSize:16px, height:46px, iconMarginLeft:16px, bgColor:#eee), //一级菜单各参数设置 
+(iconSize:18px, iconColor:#666, fontSize:14px, height:30px, iconMarginLeft:32px, bgColor:#fff), //二级菜单各参数设置 
+(iconSize:12px, iconColor:#777, fontSize:12px, height:24px, iconMarginLeft:42px, bgColor:#fff), //三级菜单各参数设置 
+);
+//一级菜单  图标字体大小、颜色
+//菜单栏背景颜色
+$menuBg:#fff;
+$activeMenuBg:#ed7020;
+$menuColor:#333;
+$activeMenuColor:#fff;
+$activeMenuIconColor:#fff;
+//菜单栏宽度
+$menuWidth:180px;
+//菜单栏border-radius;
+$menuBorderRadius:6px;
+
+.menu-top-wrapper {
+
+    border-radius: $menuBorderRadius;
+    width: $menuWidth;
+    background: $menuBg;
+    overflow: hidden;
+
+    .menu-content {
+        display: block;
+        color: $menuColor;
+        text-decoration: none;
+        position: relative;
+    }
+
+    .menu-icon {
+        display: inline-block;
+        font-weight: bold;
+        position: absolute;
+        top: 0;
+    }
+
+    @for $i from 1 through 3 {
+        $config: nth($menuConfig, $i);
+
+        .menu-content-#{$i} {
+            height: map-get($map: $config, $key: height);
+            line-height: map-get($map: $config, $key: height);
+        }
+
+        .menu-icon-#{$i} {
+            width: map-get($map:$config, $key:iconSize);
+            height: map-get($map: $config, $key:height);
+            line-height: map-get($map: $config, $key:height);
+            font-size: map-get($map:$config, $key:iconSize);
+            left: map-get($map:$config, $key:iconMarginLeft);
+        }
+
+        .menu-content-#{$i} {
+            height: map-get($map: $config, $key: height);
+            line-height: map-get($map: $config, $key: height);
+            font-size: map-get($map:$config, $key:fontSize);
+            padding-left: map-get($map: $config, $key:iconMarginLeft) + 30px;
+            background: map-get($map: $config, $key: bgColor);
+        }
+
+        .menu-ul-#{$i} {
+            overflow: hidden;
+        }
+    }
+
+    .menu-li {
+        border-top: 1px solid #DCDFE6;
+        cursor: pointer;
+    }
+
+    .menu-li.active>.menu-content {
+        background: $activeMenuBg;
+        color: $activeMenuColor;
+
+        i {
+            color: $activeMenuIconColor;
+        }
+    }
+
+    .menu-ul {
+        width: 180px;
+        display: none;
+    }
+
+    .menu-ul-1 {
+        display: block;
+    }
+}
