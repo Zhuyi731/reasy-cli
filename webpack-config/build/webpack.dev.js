@@ -10,9 +10,9 @@ module.exports = merge(baseConfig, {
     devtool: '#source-map',
     devServer: {
         before(app) {
-            app.post('/goform|login|cgi-bin/**', (req, res) => {
+            app.post('/mock/**', (req, res) => {
                 //重定向到对应路径
-                res.redirect(req.originalUrl);
+                res.redirect(`${req.originalUrl.split("?")[0]}.mock.json`);
             });
         }
     },

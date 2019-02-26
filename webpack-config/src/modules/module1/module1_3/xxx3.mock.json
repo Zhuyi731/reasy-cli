@@ -1,0 +1,9 @@
+{
+    "lanType": "dhcp",
+    "lanIp": "192.168.0.1",
+    "lanMask": "255.255.255.0",
+    "lanGw": "192.168.1.2",
+    "preDns": "8.8.8.8",
+    "altDns": "8.8.4.4",
+    "deviceName": "xxx"
+}

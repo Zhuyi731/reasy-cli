@@ -9,8 +9,8 @@ module.exports = {
         extensions: ['.js', ".json"],
         alias: { //设置别名，方便引入文件
             "@modules": path.join(__dirname, "../src/modules"),
-            "@components": path.join(__dirname, "../src/components"),
             "@assets": path.join(__dirname, "../src/assets"),
+            "@utils": path.join(__dirname, "../src/assets/js/utils")
         }
     },
     entry: {
@@ -23,11 +23,11 @@ module.exports = {
     },
     module: {
         rules: [{
-            //     enforce: 'pre', // ESLint 优先级高于其他 JS 相关的 loader
-            //     test: /\.js$/,
-            //     exclude: /node_modules|assets/,
-            //     use: "eslint-loader"
-            // }, {
+            enforce: 'pre', // ESLint 优先级高于其他 JS 相关的 loader
+            test: /\.js$/,
+            exclude: /node_modules|assets/,
+            use: "eslint-loader"
+        }, {
             test: /\.js$/, //匹配所有.js文件
             use: [{
                 loader: 'babel-loader?cacheDirectory=true',
@@ -36,7 +36,8 @@ module.exports = {
                         "@babel/preset-env"
                     ],
                     plugins: [
-                        "@babel/plugin-syntax-dynamic-import"
+                        "@babel/plugin-syntax-dynamic-import",
+                        "@babel/plugin-proposal-class-properties"
                     ]
                 }
             }],
@@ -60,7 +61,7 @@ module.exports = {
                 loader: "fast-sass-loader" // compiles Sass to CSS 
             }]
         }, {
-            test: /\.(png|jpg|png|jpeg|bmp|webp)$/, //处理css和js中的图片文件
+            test: /\.(png|jpg|png|jpeg|bmp|webp|gif)$/, //处理css和js中的图片文件
             loader: 'url-loader',
             options: {
                 limit: 20,
@@ -81,10 +82,7 @@ module.exports = {
                 loader: 'url-loader',
                 options: {
                     name: 'assets/fonts/[name]_[hash:5].min.[ext]',
-                    limit: 5000,
-                    publicPath: '',
-                    outputPath: 'dist/',
-                    useRelativePath: true
+                    limit: 5000
                 }
             }]
         }]
@@ -102,7 +100,7 @@ module.exports = {
             to: './pages',
             flatten: true
         }, {
-            from: './src/modules/**/*.mock.js',
+            from: './src/modules/**/*.mock.json',
             to: './mock',
             flatten: true
         }, {

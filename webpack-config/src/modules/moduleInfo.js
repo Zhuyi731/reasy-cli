@@ -3,27 +3,26 @@ const productInfo = {
     productLine: "",
     ignoredMenus: [],
     menus: [{
-        title: "11111111aa",
+        title: "基础页面模板",
         icon: "luyouqi",
         children: [{
-            title: "222bb",
-            path: "/moduleA/bb",
-            icon: "luyouqi"
+            title: "基础页面",
+            path: "/module1_1",
+            icon: "luyouqi2"
         }, {
-            path: "/moduleA/cc",
-            title: "222222cc"
+            path: "/module1_2",
+            title: "纯展示页面",
+        }, {
+            path: "/module1_3",
+            title: "表单页面"
         }]
     }, {
-        title: "11111112dd",
-        path: "/moduleA/dd",
+        title: "路由功能",
+        path: "/module2",
         icon: "guanbi"
     }, {
-        title: "111111113ee",
-        icon: "zidingyi",
-        children: [{
-            path: "/moduleA/ff",
-            title: "222"
-        }]
+        title: "单个菜单",
+        icon: "zidingyi"
     }]
 };
 

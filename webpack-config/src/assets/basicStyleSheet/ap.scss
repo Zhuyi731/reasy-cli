@@ -1,15 +1,18 @@
-//头部设定
+//主色调
 $mainColor:#F60;
 
 //内容框宽度
-$contentWidth:600px;
+$contentWidth:800px;
 $contentMinHeight:500px;
+$contentBorder: 1px solid #d5d5d5;
+$contentBorderRadius:4px;
+//侧边栏配置
 $asideWidth:180px;
+$asideBorder: 1px solid #d5d5d5;
+$asideBorderRaius:4px;
 
-/* 表单组件样式定义 START */
-/* 表单组件样式定义 END */
 body {
-    background: #d7d7d7;
+    background: #fff;
     min-width: 1200px;
 }
 
@@ -33,7 +36,7 @@ body {
 }
 
 .main-container {
-    width: $contentWidth+$asideWidth+40px;
+    width: $contentWidth+$asideWidth+80px;
     height: 100%;
     min-height: 600px;
     position: relative;
@@ -46,103 +49,64 @@ body {
 
     .menu-aside {
         width: $asideWidth;
-        min-height: $contentMinHeight;
-        float:left;
+        float: left;
+        border: $asideBorder;
+        border-radius: $asideBorderRaius;
+        overflow: hidden;
     }
 
     .main-page {
         display: block;
         min-width: $contentWidth;
         margin-left: 40px;
-        border-radius: 4px;
         background: #fff;
         min-height: $contentMinHeight;
         float: left;
+        border: $contentBorder;
+        border-radius: $contentBorderRadius;
+        overflow: hidden;
     }
 }
 
+.main-page {
+    .head {
+        background: #eee;
+        height: 40px;
+        line-height: 40px;
+        padding-left: 20px;
+        font-size: 14px;
+        color: #666;
+        border-bottom: 1px solid #d5d5d5;
+    }
 
+    .block {
+        margin: 0 20px;
+        padding: 20px;
+        border-top: 1px solid #eee;
+    }
 
+    .block-first {
+        border-top: none;
+    }
+}
 
-
-
-/**
-* 侧边栏菜单样式 START
-*/
-// #menu-aside {
-//     border-radius: 4px;
-//     width: $menuWidth;
-//     background: $menuBg;
-
-
-//     .menu-content {
-//         height: 46px;
-//         line-height: 46px;
-//         position: relative;
-//     }
-
-//     .menu-icon {
-//         display: inline-block;
-//         font-weight: bold;
-//         position: absolute;
-//         top: 0;
-//     }
-
-//     .menu-a {
-//         position: absolute;
-//         top: 0;
-//         display: inline-block;
-//         height: 46px;
-//         line-height: 46px;
-//         color: #333;
-//         text-decoration: none;
-//         margin-left: 10px;
-//     }
-
-//     @for $i from 1 through 3 {
-//         $config: nth($menuConfig, $i);
-
-//         .menu-content-#{$i} {
-//             height: map-get($map: $config, $key: height);
-//             line-height: map-get($map: $config, $key: height);
-//         }
-
-//         .menu-icon-#{$i} {
-//             width: map-get($map:$config, $key:iconSize);
-//             height: map-get($map: $config, $key:height);
-//             line-height: map-get($map: $config, $key:height);
-//             font-size: map-get($map:$config, $key:iconSize);
-//             left: map-get($map:$config, $key:iconMarginLeft);
-//         }
-
-//         .menu-a-#{$i} {
-//             height: map-get($map: $config, $key: height);
-//             line-height: map-get($map: $config, $key: height);
-//             font-size: map-get($map:$config, $key:fontSize);
-//             left: map-get($map: $config, $key:iconMarginLeft) + 20px;
-//         }
-
-//         .menu-ul-#{$i} {
-//             max-height: 0;
-//             overflow: hidden;
-//             transition: 1s max-height;
-//         }
-//     }
-
-//     .menu-ul-1 {
-//         max-height: 100%;
-//     }
-
-
-//     .menu-li {
-//         border-top: 1px solid #DCDFE6;
-//     }
-
-//     .menu-ul {
-//         width: 180px;
-//     }
-// }
+.clearfix:after {
+    content: "";
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
 
 /**
-* 侧边栏菜单样式 END
+* 表单组件样式覆盖
 */
+
+.control-wrap {
+    .form-title {
+        text-align: right;
+    }
+
+    .form-content {
+        width: 60%;
+    }
+}
