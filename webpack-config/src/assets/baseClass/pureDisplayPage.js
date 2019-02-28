@@ -24,10 +24,11 @@ export default class PureDisplayPage extends BasePage {
                     datas.forEach((data, index) => {
                         refreshSetting[index].reloadFunction(data);
                     });
+                    this.$showHideElements(showHideElement, "show");
                 })
                 .then(() => {
                     setTimeout(() => {
-                        this.refresh(refreshSetting);
+                        this.refresh(...arguments);
                     }, timeout);
                 })
                 .catch(err => {

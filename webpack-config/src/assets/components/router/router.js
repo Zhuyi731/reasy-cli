@@ -10,22 +10,20 @@ import $ from "jquery";
  * @type object 
  * {
  *   @param elemetns: @type Array  各级路由的router-view的选择器
- *   @param defaultPage:@type String 当没有匹配到任何路由时，应该跳转至哪个页面  
  *   @param temolateLoadingPrefix : @type String 编译后的html存放的路径，与html-webpack-plugin插件有关  
  *   @param routerCfg :@type Array  路由配置
  * }
  */
 
 export default class Router {
-    constructor({ elements, defaultPage, templateLoadingPrefix, routerCfg }) {
-
+    constructor({ routerCfg }) {
         this.$validateOptions(...arguments);
         this.$init(...arguments);
         this.$registRouterCfg(routerCfg);
         this.$watchHashChange(); //监视hash变化
     }
 
-    $validateOptions({ elements, defaultPage, templateLoadingPrefix, routerCfg }) {
+    $validateOptions({ elements, routerCfg }) {
         if (!Promise in window) {
             throw new Error("You need Promise polyfill");
         }
@@ -35,10 +33,13 @@ export default class Router {
         if (!Array.isArray(elements)) throw new Error("router.elements is supposed to be an Array");
     }
 
-    $init({ elements, defaultPage, templateLoadingPrefix, routerCfg }) {
+    $init({ elements, redirectToDefault, beforeRouting, afterRouting, templateLoadingPrefix, routerCfg }) {
+
+        //attributes binding
         this.$elements = elements;
-        this.$defaultPage = defaultPage;
         this.$templateLoadingPrefix = templateLoadingPrefix || "pages/";
+
+        //attributes initialize
         this.routerCfg = {}; //路由配置
         this.cache = {}; //模板缓存
         this.current = null; //当前路由
@@ -46,6 +47,11 @@ export default class Router {
         this.$currentPage = null; //前一个页面实例的引用
         this.$previousPage = null; //当前页面实例的应用
         this.historys = [];
+
+        //hooks binding
+        this.beforeRouting = beforeRouting;
+        this.afterRouting = afterRouting;
+        redirectToDefault && (this.redirectToDefault = redirectToDefault);
     }
 
     $registRouterCfg(routerCfg, parentPath = "", depth = 0) {
@@ -81,6 +87,7 @@ export default class Router {
     }
 
     $watchHashChange() {
+        //to validate IE8 compatibility
         window.addEventListener('hashchange', this.$hashChanged, false);
     }
 
@@ -92,19 +99,23 @@ export default class Router {
         return this.$currentPage;
     }
 
-    push = (url) => {
+    push(hash) {
+        window.location.hash = hash;
+    }
+
+    load = (url) => {
         if (url in this.routerCfg) {
             this.previous = this.current;
             this.current = url;
             this.historys.push(this.current);
             //路由处理
-            this.beforeRouting();
+            this.$beforeRouting(this.previous, this.current);
 
             Promise.all([this.$loadComponent(), this.$loadTemplate()])
                 .then(pages => {
                     return pages[0];
                 })
-                .then(this.afterRouting)
+                .then(this.$afterRouting)
                 .catch(err => {
                     throw err;
                 });
@@ -114,13 +125,13 @@ export default class Router {
         }
     }
 
-    $hashChanged = (e) => {
-        let newHash = e.newURL.split("#").pop().split("?")[0];
-        this.push(newHash);
+    redirectToDefault() {
+        top.location.reload();
     }
 
-    redirectToDefault() {
-
+    $hashChanged = (e) => {
+        let newHash = e.newURL.split("#").pop().split("?")[0];
+        this.load(newHash);
     }
 
     $loadComponent = () => {
@@ -162,7 +173,10 @@ export default class Router {
         });
     }
 
-    beforeRouting() {
+    $beforeRouting(previous, current) {
+        if (this.beforeRouting && typeof this.beforeRouting == "function") {
+            this.beforeRouting(previous, current);
+        }
         //eslint-disable-next-line
         if (process && process.env && process.env.NODE_ENV == "development") {
             console.log(`now routing to ${this.current}`);
@@ -173,7 +187,9 @@ export default class Router {
      * 路由仅会加载js，不会进行js调用，需要手动设置afterRouting函数来调用
      * @param {*} Page 
      */
-    afterRouting = (Page) => {
-
+    $afterRouting = page => {
+        if (this.afterRouting && typeof this.afterRouting == "function") {
+            this.afterRouting(page);
+        }
     }
 }

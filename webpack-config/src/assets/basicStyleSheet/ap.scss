@@ -36,7 +36,7 @@ body {
 }
 
 .main-container {
-    width: $contentWidth+$asideWidth+80px;
+    width: $contentWidth+$asideWidth+120px;
     height: 100%;
     min-height: 600px;
     position: relative;
@@ -58,6 +58,7 @@ body {
     .main-page {
         display: block;
         min-width: $contentWidth;
+        max-width: $contentWidth+70px;
         margin-left: 40px;
         background: #fff;
         min-height: $contentMinHeight;
@@ -87,6 +88,12 @@ body {
 
     .block-first {
         border-top: none;
+    }
+
+    .line {
+        font-size: 14px;
+        color: #333333;
+        padding: 4px 0;
     }
 }
 

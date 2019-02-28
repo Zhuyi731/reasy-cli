@@ -43,12 +43,20 @@ class MainLogic {
     //初始化路由
     initRouter() {
         window.location.hash = "/";
-        this.$route = new Router({ elements: [document.getElementById("page-content")], routerCfg });
-        this.$route.beforeRouting = this.beforeRouting;
-        this.$route.afterRouting = this.afterRouting;
+        this.$route = new Router({
+            elements: [document.getElementById("page-content")],
+            routerCfg,
+            beforeRouting: this.beforeRouting,
+            afterRouting: this.afterRouting
+        });
     }
 
-    beforeRouting = () => {
+    beforeRouting = (previous, current) => {
+        if (current != this.$menu.getCurrentMenu()) {
+            //这种情况说明是通过返回键来进行的跳转  
+            // this.$menu.changeActiveMenu($(`li[data-path="${current}"]`));
+            this.$menu.setMenu(current);
+        }
         this.$loading = this.$loading || new Loading();
         this.$loading.addLoading({ element: "#page-content", content: _("加载页面中") });
     }
@@ -61,6 +69,7 @@ class MainLogic {
             //b28n no translate
             console.error("You should use page template insteadof write it yourself");
         }
+
         let previousPage = this.$route.getPreviousPage();
         previousPage && previousPage.onPageLeave();
         page.$parent = this;
@@ -95,12 +104,14 @@ class MainLogic {
         this.$menu = new Menu({
             element: $("#menu-aside"),
             menus: moduleInfo.menus,
-            onMenuChange: this.onMenuChange
+            onMenuChange: (lastPath, currentPath) => {
+                if (lastPath === currentPath) {
+                    this.$route.load(currentPath);
+                } else {
+                    this.$route.push(currentPath);
+                }
+            }
         });
-    }
-
-    onMenuChange(lastMenu, currentMenu) {
-
     }
 }
 

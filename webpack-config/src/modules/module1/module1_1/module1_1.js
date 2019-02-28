@@ -17,12 +17,12 @@ export default class Page extends BasePage {
 
         this.timer.timer1 = setInterval(() => {
             $(".timer1").text(`timer1:${++timer1Ct}s`);
-            console.log(`timer1:${++timer1Ct}s`);
+            console.log(`timer1:${timer1Ct}s`);
         }, 1000);
         
         this.timer.timer2 = setInterval(() => {
             $(".timer2").text(`timer2:${++timer2Ct}s`);
-            console.log(`timer2:${++timer2Ct}s`);
+            console.log(`timer2:${timer2Ct}s`);
         }, 1000);
     }
 }

@@ -11,14 +11,9 @@ export default [{
 }, {
     template: "module1_3",
     path: "/module1_3",
-    component: () => import( /* webpackChunkName: 'module1_3'*/ "@modules/module1/module1_3/module1_3.js"),
-    children: [{
-        path: "ff",
-        template: "module2_1",
-        component: () => import( /* webpackChunkName: 'module2_1'*/ "@modules/module2/module2_1/module2_1.js"),
-        // }, {
-        //     path: "ee",
-        //     template: "module2_1",
-        //     component:() => import( /* webpackChunkName: 'module2_1'*/ "@modules/module2/module2_1/module2_1.js"),
-    }]
+    component: () => import( /* webpackChunkName: 'module1_3'*/ "@modules/module1/module1_3/module1_3.js")
+}, {
+    path: "/module2_1",
+    template: "module2_1",
+    component: () => import( /* webpackChunkName: 'modules/module2_1'*/ "@modules/module2/module2_1/module2_1.js")
 }];

@@ -4,22 +4,28 @@ const productInfo = {
     ignoredMenus: [],
     menus: [{
         title: "基础页面模板",
-        icon: "luyouqi",
+        icon: "guanbi",
         children: [{
             title: "基础页面",
             path: "/module1_1",
             icon: "luyouqi2"
         }, {
             path: "/module1_2",
-            title: "纯展示页面",
+            title: "纯展示页面"
         }, {
             path: "/module1_3",
             title: "表单页面"
         }]
     }, {
         title: "路由功能",
-        path: "/module2",
-        icon: "guanbi"
+        icon: "luyouqi",
+        children: [{
+            path: "/module2_1",
+            title: "基础路由"
+        }, {
+            path: "/module2_2",
+            title: "嵌套路由"
+        }]
     }, {
         title: "单个菜单",
         icon: "zidingyi"

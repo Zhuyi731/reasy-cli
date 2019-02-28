@@ -44,6 +44,6 @@ export default class Page extends PureDisplayPage {
         this.refresh([{
             url: this.getUrl,
             reloadFunction: this.components.lanStatus.reLoad
-        }], 5000);
+        }], 5000, [$("component-wrap")]);
     }
 }
