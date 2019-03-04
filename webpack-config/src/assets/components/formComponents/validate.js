@@ -8,7 +8,7 @@
  * Depends:
  *	reasy-ui-core.js
  */
-import $ from "jquery";
+
 $.valid = {
     len: function(str, min, max) {
         let len = str.length;

@@ -16,4 +16,25 @@ export default [{
     path: "/module2_1",
     template: "module2_1",
     component: () => import( /* webpackChunkName: 'modules/module2_1'*/ "@modules/module2/module2_1/module2_1.js")
+}, {
+    path: "/module2_2",
+    template: "module2_2",
+    component: () => import( /* webpackChunkName: 'modules/module2_2'*/ "@modules/module2/module2_2/module2_2.js"),
+    children: [{
+        path: "/nest_router1",
+        template: "nest_router1",
+        component: () => import( /* webpackChunkName: 'modules/module2_1/nest_router1/nest_router1'*/ "@modules/module2/module2_1/nest_router1/nest_router1.js")
+    }, {
+        path: "/nest_router2",
+        template: "nest_router2",
+        component: () => import( /* webpackChunkName: 'modules/module2_1/nest_router2/nest_router2'*/ "@modules/module2/module2_1/nest_router2/nest_router2.js")
+    }, {
+        path: "/nest_router3",
+        template: "nest_router3",
+        component: () => import( /* webpackChunkName: 'modules/module2_1/nest_router3/nest_router3'*/ "@modules/module2/module2_1/nest_router3/nest_router3.js")
+    }]
+}, {
+    path: "/module3",
+    template: "module3",
+    component: () => import( /* webpackChunkName: 'modules/module3'*/ "@modules/module3/module3.js")
 }];

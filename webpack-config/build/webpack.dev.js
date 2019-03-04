@@ -6,7 +6,6 @@ const baseConfig = require("./webpack.base");
 const webpack = require("webpack");
 
 module.exports = merge(baseConfig, {
-    mode: "development",
     devtool: '#source-map',
     devServer: {
         before(app) {

@@ -1,0 +1,15 @@
+#third-menu {
+    ul {
+        width: 600px;
+
+        li {
+            display: inline-block;
+            width: 200px;
+        }
+
+        .menu-content {
+            padding: 4px 10px;
+            text-align: center;
+        }
+    }
+}

@@ -1,4 +1,4 @@
-import $ from "jquery";
+
 import "./module1_1.scss";
 import BasePage from "@assets/baseClass/BasePage";
 

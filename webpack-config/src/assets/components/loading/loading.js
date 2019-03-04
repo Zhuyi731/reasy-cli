@@ -1,4 +1,4 @@
-import $ from "jquery";
+
 import "./loading.scss";
 
 export default class Loading {

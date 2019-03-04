@@ -1,10 +1,9 @@
 /*eslint-disable*/
 const path = require("path");
-const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //自动生成html
+const HtmlWebpackInjector = require('html-webpack-injector'); //头部和body插入不同chunk
 const CopyWebpackPlugin = require('copy-webpack-plugin'); //将特定文件输出指定位置
 const es3ifyPlugin = require("es3ify-webpack-plugin");
-
 
 module.exports = {
     resolve: {
@@ -17,10 +16,12 @@ module.exports = {
         mainFields: ['browser', 'main']
     },
     entry: {
-        index: [path.join(__dirname, '../src/modules/index/index.js')]
+        index: [path.join(__dirname, '../src/modules/index/index.js')],
+        b28n_head: [path.join(__dirname, "../src/language/b28n.js")],
+        polyfill_head: ["es5-shim", "babel-polyfill"]
     },
     output: {
-        path: path.join(__dirname, '../dist'),
+        path: path.resolve('./dist'),
         filename: '[name]_[chunkhash:5].js',
         chunkFilename: "chunks/[name]_[chunkhash:5].js"
     },
@@ -31,11 +32,14 @@ module.exports = {
             exclude: /node_modules|assets/,
             use: "eslint-loader"
         }, {
+        //     test: /\.js$/, //匹配所有.js文件
+        //     loader: "es3ify-loader"
+        // }, {
             test: /\.js$/, //匹配所有.js文件
             use: [{
                 loader: 'babel-loader'
             }],
-            exclude: /node_modules/ //排除node_module下的所有文件
+            // exclude: /node_modules/ //排除node_module下的所有文件
         },
         {
             test: /\.css$/,
@@ -87,16 +91,13 @@ module.exports = {
         }]
     },
     plugins: [
-        new webpack.ProvidePlugin({
-            $: 'jquery',
-            jQuery: 'jquery'
-        }),
         new HtmlWebpackPlugin({
             template: path.join(__dirname, '../src/modules/index/index.html'),
             filename: "index.html",
-            chunks: ['index'],
+            chunks: ['index', "b28n_head"],
             inject: "body"
         }),
+        new HtmlWebpackInjector(),
         new es3ifyPlugin(),
         new CopyWebpackPlugin([{ //reference from：https://www.npmjs.com/package/copy-webpack-plugin
             from: './src/modules/**/!(login|index|quickset).html', //TO REPLACE

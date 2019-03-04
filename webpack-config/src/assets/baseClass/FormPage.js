@@ -1,5 +1,5 @@
 import BasePage from "./BasePage";
-import $ from "jquery";
+
 
 export default class FormPage extends BasePage {
     constructor() {

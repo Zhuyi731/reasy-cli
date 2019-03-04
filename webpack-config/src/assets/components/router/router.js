@@ -1,5 +1,3 @@
-import $ from "jquery";
-
 
 /**
  * @Usage 
@@ -81,7 +79,7 @@ export default class Router {
             };
 
             if (cfg.children && cfg.children.length > 0) {
-                this.$registRouterCfg(cfg.children, currentPath, ++depth);
+                this.$registRouterCfg(cfg.children, currentPath, depth + 1);
             }
         });
     }
@@ -105,8 +103,13 @@ export default class Router {
 
     load = (url) => {
         if (url in this.routerCfg) {
-            this.previous = this.current;
-            this.current = url;
+            if (!this.current) { //第一次进入路由
+                this.previous = this.current = url;
+            } else {
+                this.previous = this.current;
+                this.current = url;
+            }
+
             this.historys.push(this.current);
             //路由处理
             this.$beforeRouting(this.previous, this.current);
@@ -160,13 +163,13 @@ export default class Router {
                 depth = cfg.depth;
 
             if (cfg.html) {
-                this.$elements[depth].innerHTML = cfg.html;
+                $(`#${this.$elements[depth]}`).html(cfg.html);
                 resolve();
             } else {
                 let templateUrl = this.$templateLoadingPrefix + cfg.template + `.html?version=${Math.random()}`;
                 $.get(templateUrl, template => {
                     cfg.html = template;
-                    this.$elements[depth].innerHTML = template;
+                    $(`#${this.$elements[depth]}`).html(template);
                     resolve();
                 });
             }
@@ -175,7 +178,7 @@ export default class Router {
 
     $beforeRouting(previous, current) {
         if (this.beforeRouting && typeof this.beforeRouting == "function") {
-            this.beforeRouting(previous, current);
+            this.beforeRouting(previous, current, this.routerCfg[this.current].depth, this.routerCfg[this.previous].depth);
         }
         //eslint-disable-next-line
         if (process && process.env && process.env.NODE_ENV == "development") {
@@ -189,7 +192,7 @@ export default class Router {
      */
     $afterRouting = page => {
         if (this.afterRouting && typeof this.afterRouting == "function") {
-            this.afterRouting(page);
+            this.afterRouting(page, this.routerCfg[this.current].depth);
         }
     }
 }

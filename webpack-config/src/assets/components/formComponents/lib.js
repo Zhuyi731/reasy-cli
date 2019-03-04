@@ -1,6 +1,3 @@
-
-import * as $ from "jquery";
-window.$ = window.jQuery = $;
 /*!
  * reasy-ui.js v1.0.5 2015-06-19
  * Copyright 2015 ET.W

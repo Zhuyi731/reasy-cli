@@ -43,7 +43,10 @@ export default class Page extends PureDisplayPage {
         this.components.lanStatus.reLoad(data);
         this.refresh([{
             url: this.getUrl,
-            reloadFunction: this.components.lanStatus.reLoad
-        }], 5000, [$("component-wrap")]);
+            reloadFunction: data => {
+                //保证this指向
+                this.components.lanStatus.reLoad(data);
+            }
+        }], 5000, [$(".component-wrap")]);
     }
 }

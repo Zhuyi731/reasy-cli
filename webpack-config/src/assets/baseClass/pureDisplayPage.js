@@ -45,7 +45,11 @@ export default class PureDisplayPage extends BasePage {
      */
     $showHideElements(elements, type) {
         this.differentTypeSolution(elements, el => {
-            el.css("visibility", type == "hide" ? "hidden" : "visible");
+            if (type == "hide") {
+                el.addClass("hide");
+            } else {
+                el.removeClass("hide");
+            }
         });
     }
 }

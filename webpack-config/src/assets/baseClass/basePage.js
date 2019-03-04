@@ -1,4 +1,4 @@
-import $ from "jquery";
+
 export default class BasePage {
     constructor() {
         this.pageName = "";

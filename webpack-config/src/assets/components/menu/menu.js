@@ -1,4 +1,3 @@
-import $ from "jquery";
 import "./menu.scss";
 
 export default class Menu {
@@ -38,7 +37,7 @@ export default class Menu {
             let originalPath = $("li.active").data("path"),
                 currentPath = $menu.data("path");
 
-            $("li.active").removeClass("active");
+            $(`#${this.guid} li.active`).removeClass("active");
             $menu.addClass("active");
             this.currentMenu = currentPath;
             this.onMenuChange(originalPath, currentPath);
@@ -48,37 +47,18 @@ export default class Menu {
     setMenu(path) {
         if ($(`li[data-path="${path}"]`).length == 0) return;
         let $menu = $(`li[data-path="${path}"]`),
-            ct = 1,
-            parentNode = $menu.parent(),
-            parrentClass = parentNode.attr("class").split(" "),
-            grandMenu = parentNode.parent(),
-            grandClass = grandMenu.attr("class").split(" ");
+            level = $menu.data("level");
 
-        while (!parrentClass.includes("menu-ul-1") && !grandClass.includes("menu-open")) {
-            parentNode = grandMenu.parent();
-            parrentClass = parentNode.attr("class").split(" ");
-            grandMenu = parentNode.parent();
-            grandClass = grandMenu.attr("class").split(" ");
-
-            ++ct;
-            if (ct > 4) break;
+        if (level == 2) {
+            let classes = $menu.parent().parent().attr("class");
+            if (!classes.includes("menu-open")) {
+                $(`#${this.guid} .menu-li-1.menu-open`).removeClass("menu-open").children("ul").slideUp();
+                $menu.parent().parent().addClass("menu-open").children("ul").slideDown();
+            }
         }
 
-        if (grandClass.includes("menu-open")) {
-            let level = grandMenu.data("level");
-            $(`#${this.guid}  .menu-li-${level}.menu-open`).removeClass("menu-open").find("ul").slideUp();
-        } else {
-            $(`#${this.guid}  .menu-li-1.menu-open`).removeClass("menu-open").find("ul").slideUp();
-        }
-
-        parentNode = $menu.parent();
-        while (ct--) {
-            parentNode = parentNode.slideDown();
-            parentNode.parent().addClass("menu-open");
-            parentNode = parentNode.parent().parent();
-        }
-
-        $("li.active").removeClass("active");
+        this.currentMenu = path;
+        $(`#${this.guid} li.active`).removeClass("active");
         $menu.addClass("active");
     }
 
@@ -88,13 +68,17 @@ export default class Menu {
 
     onMenuChange(before, after) {
         if (this.options.onMenuChange) {
-            this.options.onMenuChange(before, after);
+            this.options.onMenuChange(before, after, this.guid);
         }
     }
 
     $iterator(menus, depth) {
         ++depth;
         menus.forEach((menu, index) => {
+            if (menu.path && !/^\//.test(menu.path)) {
+                menu.path = "/" + menu.path;
+            }
+
             let hasChildren = menu.children && menu.children.length > 0,
                 contentLabel = "div",
                 iconClassName = `menu-icon menu-icon-${depth} `,

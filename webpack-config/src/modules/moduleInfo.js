@@ -1,10 +1,11 @@
+//todo  完善Icon组件
 const productInfo = {
     product: "xxx",
     productLine: "",
     ignoredMenus: [],
     menus: [{
         title: "基础页面模板",
-        icon: "guanbi",
+        icon: "icon_shezhi",
         children: [{
             title: "基础页面",
             path: "/module1_1",
@@ -28,7 +29,8 @@ const productInfo = {
         }]
     }, {
         title: "单个菜单",
-        icon: "zidingyi"
+        icon: "wuxupailie",
+        path: "/module3"
     }]
 };
 
