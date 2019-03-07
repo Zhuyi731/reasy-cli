@@ -11,10 +11,10 @@ export default class Menu {
         this.guid = $.IGuid();
         this.$element = this.options.element;
         this.$getMenuTemplate(this.options.menus);
-        this.$element.append($(this.template));
+        this.$element.append(this.template);
 
         let that = this;
-        this.$element.on("click", "li", function(e) {
+        this.$element.on("click", ".menu-li", function(e) {
             e.stopPropagation();
             that.changeActiveMenu($(this));
         });
@@ -28,16 +28,16 @@ export default class Menu {
             if (menuClasses.includes("menu-open")) { //开启的
                 $menu.removeClass("menu-open").find("ul").slideUp();
             } else {
-                $(`#${this.guid} .menu-li-${level}.menu-open`).removeClass("menu-open").find("ul").slideUp();
-                $menu.addClass("menu-open").children("ul").slideDown();
-                this.changeActiveMenu($menu.children("ul").children("li").eq(0));
+                $(`#${this.guid} .menu-li-${level}.menu-open`).removeClass("menu-open").find(".menu-ul").slideUp();
+                $menu.addClass("menu-open").children(".menu-ul").slideDown();
+                this.changeActiveMenu($menu.children(".menu-ul").children(".menu-li").eq(0));
             }
         } else {
             $(`#${this.guid}  .menu-li-${level}.menu-open`).removeClass("menu-open").find("ul").slideUp();
-            let originalPath = $("li.active").data("path"),
+            let originalPath = $(".menu-li.active").data("path"),
                 currentPath = $menu.data("path");
 
-            $(`#${this.guid} li.active`).removeClass("active");
+            $(`#${this.guid} .menu-li.active`).removeClass("active");
             $menu.addClass("active");
             this.currentMenu = currentPath;
             this.onMenuChange(originalPath, currentPath);
@@ -45,20 +45,20 @@ export default class Menu {
     }
 
     setMenu(path) {
-        if ($(`li[data-path="${path}"]`).length == 0) return;
-        let $menu = $(`li[data-path="${path}"]`),
+        if ($(`.menu-li[data-path="${path}"]`).length == 0) return;
+        let $menu = $(`.menu-li[data-path="${path}"]`),
             level = $menu.data("level");
 
         if (level == 2) {
             let classes = $menu.parent().parent().attr("class");
             if (!classes.includes("menu-open")) {
-                $(`#${this.guid} .menu-li-1.menu-open`).removeClass("menu-open").children("ul").slideUp();
-                $menu.parent().parent().addClass("menu-open").children("ul").slideDown();
+                $(`#${this.guid} .menu-li-1.menu-open`).removeClass("menu-open").children(".menu-ul").slideUp();
+                $menu.parent().parent().addClass("menu-open").children(".menu-ul").slideDown();
             }
         }
 
         this.currentMenu = path;
-        $(`#${this.guid} li.active`).removeClass("active");
+        $(`#${this.guid} .menu-li.active`).removeClass("active");
         $menu.addClass("active");
     }
 
@@ -80,34 +80,37 @@ export default class Menu {
             }
 
             let hasChildren = menu.children && menu.children.length > 0,
-                contentLabel = "div",
                 iconClassName = `menu-icon menu-icon-${depth} `,
                 liClassName = `menu-li menu-li-${depth}`,
                 dataPath = menu.path ? `data-path="${menu.path}"` : "";
+                // dataPath = "";
             //添加类名
             iconClassName += menu.icon ? `icon-${menu.icon}` : "icon-empty";
             (index == 0 && depth == 1) && (liClassName += " menu-top");
             hasChildren && (liClassName += " menu-parent");
 
-            this.template += `<li class="${liClassName}" ${dataPath} data-level="${depth}" data-guid="${this.guid}">
-                                <${contentLabel} class="menu-content menu-content-${depth}" ${menu.path?("href=\"#"+menu.path+"\""):""}>
+            this.template += `
+                            <div class="${liClassName}" ${dataPath} data-level="${depth}">
+                                <div class="menu-content menu-content-${depth}">
                                     <i class="${iconClassName}"></i>
-                                    ${menu.title}
-                                </${contentLabel}>`;
+                                    <p>${menu.title}</p>
+                                </div>
+                                `;
             //如果有子节点，遍历处理
             if (hasChildren) {
-                this.template += `<ul class="menu-ul menu-ul-${depth + 1}">`;
+                this.template += `<div class="menu-ul menu-ul-${depth + 1}">`;
                 this.$iterator(menu.children, depth);
-                this.template += `</ul></li>`;
-            } else {
-                this.template += `</li>`;
+                this.template += `</div>`;
             }
+
+            this.template += `</div>`;
         });
     }
 
     $getMenuTemplate(menus) {
-        this.template = `<ul class="menu-top-wrapper menu-ul menu-ul-1 menu-top" id="${this.guid}">`;
+        this.template = `<div class="menu-top-wrapper menu-ul menu-ul-1 menu-top" id="${this.guid}">`;
         this.$iterator(menus, 0);
-        this.template += "</ul>";
+        this.template += `
+        </div>`;
     }
 }

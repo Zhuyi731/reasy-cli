@@ -62,7 +62,7 @@
 
         //获取语言文件相对路径
         js = document.scripts,
-        langPath = js[js.length - 1].src.substring(0, js[js.length - 1].src.lastIndexOf("/") + 1) + PRODUCT_NAME + "/",
+        langPath = js[js.length - 1].src.substring(0, js[js.length - 1].src.lastIndexOf("/") + 1) + "/",
 
         // JSON RegExp
         rvalidchars = /^[\],:{}\s]*$/,
@@ -496,7 +496,7 @@
                 this.success = callBack;
             }
 
-            htmlElem.style.visibility = "hidden";
+            // htmlElem.style.visibility = "hidden";
             htmlElem.className = htmlElem.className + " lang-" + this.lang;
 
             if (Object.prototype.toString.call(domain) === "[object Array]") {
@@ -557,7 +557,7 @@
                 //处理一对多的翻译时对翻译加上了唯一标识的前缀，故需要把这些前缀去掉
                 return key.replace(/^[a-zA-Z]\#[a-zA-Z][a-zA-Z][a-zA-Z]\#/g, "");
             }
-         
+
             return MSG[key] !== undefined ? MSG[key] : key.replace(/^[a-zA-Z]\#[a-zA-Z][a-zA-Z][a-zA-Z]\#/g, "");
         };
         //翻译有%s参数的文本
@@ -682,6 +682,6 @@
     };
     win.Butterlate.loadScript = loadScript;
 
-    B.setTextDomain("translate");
+    B.setTextDomain("translate", "en");
 
 }(window, document));

@@ -9,10 +9,10 @@ export default class Page extends BasePage {
     }
 
     init() {
-        hljs.registerLanguage('javascript', javascript);
-        document.querySelectorAll('pre code').forEach((block) => {
-            hljs.highlightBlock(block);
-        });
+        try {  //IE下不支持highlightjs渲染
+            hljs.registerLanguage('javascript', javascript);
+            hljs.highlightBlock($('pre code')[0]);
+        }catch(e){}
     }
 
 }

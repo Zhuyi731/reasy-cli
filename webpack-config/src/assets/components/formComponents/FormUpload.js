@@ -361,7 +361,7 @@ jQuery.extend({
             jQuery.globalEval(data);
         }
         if (type == "json") {
-            eval('data = "' + data + '"');
+            eval('data = "' + data + '"');//eslint-disable-line
         }
         if (type == "html") {
             jQuery("<div>").html(data).evalScripts();

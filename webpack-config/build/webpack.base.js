@@ -4,7 +4,10 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //自动生成html
 const CopyWebpackPlugin = require('copy-webpack-plugin'); //将特定文件输出指定位置
 const es3ifyPlugin = require("es3ify-webpack-plugin");
-
+const HappyPack = require('happypack');
+const happyThreadPool = HappyPack.ThreadPool({
+    size: 4
+});
 
 module.exports = {
     resolve: {
@@ -61,7 +64,7 @@ module.exports = {
             test: /\.(png|jpg|png|jpeg|bmp|webp|gif)$/, //处理css和js中的图片文件
             loader: 'url-loader',
             options: {
-                limit: 20,
+                limit: 8,
                 name: 'assets/images/[name]_[hash:5].[ext]'
             }
         },
@@ -71,7 +74,7 @@ module.exports = {
                 loader: 'html-loader',
                 options: {
                     attrs: ['img:src', 'img:data-src', 'audio:src'],
-                    minimize: true
+                    // minimize: true
                 }
             }
         },

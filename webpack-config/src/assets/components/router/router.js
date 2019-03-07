@@ -1,4 +1,3 @@
-
 /**
  * @Usage 
  * import Router from "RouterComponentPath"
@@ -17,7 +16,6 @@ export default class Router {
     constructor({ routerCfg }) {
         this.$validateOptions(...arguments);
         this.$init(...arguments);
-        this.$registRouterCfg(routerCfg);
         this.$watchHashChange(); //监视hash变化
     }
 
@@ -31,25 +29,26 @@ export default class Router {
         if (!Array.isArray(elements)) throw new Error("router.elements is supposed to be an Array");
     }
 
-    $init({ elements, redirectToDefault, beforeRouting, afterRouting, templateLoadingPrefix, routerCfg }) {
-
+    $init({ elements, redirectToDefault, beforeRouting, afterRouting, templateLoadingPrefix, defaultPage, routerCfg }) {
         //attributes binding
         this.$elements = elements;
         this.$templateLoadingPrefix = templateLoadingPrefix || "pages/";
 
         //attributes initialize
         this.routerCfg = {}; //路由配置
-        this.cache = {}; //模板缓存
-        this.current = null; //当前路由
-        this.previous = null; //前一个路由
+        this.defaultPage = defaultPage;
+        this.current = "/"; //当前路由
+        this.previous = "/"; //前一个路由
         this.$currentPage = null; //前一个页面实例的引用
         this.$previousPage = null; //当前页面实例的应用
-        this.historys = [];
+        this.historys = []; //历史记录
 
         //hooks binding
         this.beforeRouting = beforeRouting;
         this.afterRouting = afterRouting;
         redirectToDefault && (this.redirectToDefault = redirectToDefault);
+        this.$registRouterCfg(routerCfg);
+
     }
 
     $registRouterCfg(routerCfg, parentPath = "", depth = 0) {
@@ -86,7 +85,11 @@ export default class Router {
 
     $watchHashChange() {
         //to validate IE8 compatibility
-        window.addEventListener('hashchange', this.$hashChanged, false);
+        if (window.addEventListener) {
+            window.addEventListener('hashchange', this.$load, false);
+        } else {
+            window.attachEvent("onhashchange", this.$load, false);
+        }
     }
 
     getPreviousPage() {
@@ -97,27 +100,25 @@ export default class Router {
         return this.$currentPage;
     }
 
-    push(hash) {
-        window.location.hash = hash;
-    }
+    $load = hash => {
+        //如果是通过hashChangeEvent传进来的会是一个事件
+        //IE8下此时间不存在oldURL 和 newURL属性，所以需要手动获取hash
+        //TODO: Firefox下兼容性待检验
+        typeof hash !== "string" && (hash = window.location.hash.split("#").pop().split("?")[0]);
 
-    load = (url) => {
-        if (url in this.routerCfg) {
-            if (!this.current) { //第一次进入路由
-                this.previous = this.current = url;
-            } else {
-                this.previous = this.current;
-                this.current = url;
-            }
+        this.previous = this.current;
+        this.current = hash;
 
+        if (this.routerCfg[hash]) {
             this.historys.push(this.current);
             //路由处理
             this.$beforeRouting(this.previous, this.current);
 
-            Promise.all([this.$loadComponent(), this.$loadTemplate()])
-                .then(pages => {
-                    return pages[0];
-                })
+            Promise.all([
+                    this.$loadComponent(),
+                    this.$loadTemplate()
+                ])
+                .then(pages => pages[0])
                 .then(this.$afterRouting)
                 .catch(err => {
                     throw err;
@@ -128,13 +129,16 @@ export default class Router {
         }
     }
 
-    redirectToDefault() {
-        top.location.reload();
+    push(hash) {
+        if (this.current === hash) {
+            this.$load(hash);
+        } else {
+            window.location.hash = hash;
+        }
     }
 
-    $hashChanged = (e) => {
-        let newHash = e.newURL.split("#").pop().split("?")[0];
-        this.load(newHash);
+    redirectToDefault() {
+        this.push(this.defaultPage);
     }
 
     $loadComponent = () => {

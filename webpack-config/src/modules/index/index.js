@@ -1,18 +1,17 @@
 import "es5-shim";
 import "babel-polyfill";
-import Promise from "es6-promise";
-import "@assets/css/initial.scss";
-import "@assets/css/iconfont.css";
-import "@assets/basicStyleSheet/ap.scss";
+import Promise from "promise-polyfill";
+import "@assets/scss/initial.scss";
+import "@assets/scss/iconfont.scss";
+import "@assets/scss/ap.scss";
 
 
 import "@assets/components/formComponents";
 import Loading from "@assets/components/loading/loading";
 import routerCfg from "../routerCfg";
-import moduleInfo from "@modules/moduleInfo";
+import moduleInfo from "../moduleInfo";
 import Menu from "@assets/components/menu/menu";
 import Router from "@assets/components/router/router";
-
 import BasePage from "@assets/baseClass/BasePage";
 
 
@@ -20,10 +19,11 @@ class MainLogic {
     //constructor用于初始化部分数据
     //在new MainLogic()这行代码执行时会执行constructor中的代码
     constructor() {
-        this.firstMenu = "wizard";
+        this.firstMenu = "/";
         this.$menu = [];
+        this.$loading = new Loading();
     }
-
+ 
     init() {
         this.initGlobalVariables();
         this.initRouter();
@@ -42,13 +42,14 @@ class MainLogic {
 
     //初始化路由
     initRouter() {
-        window.location.hash = "/";
         this.$route = new Router({
             elements: ["routerView1", "routerView2"],
             routerCfg,
+            defaultPage: "/module2_1",
             beforeRouting: this.beforeRouting,
             afterRouting: this.afterRouting
         });
+        window.location.hash = this.firstMenu;
     }
 
     beforeRouting = (previous, current, level, previousLevel) => {
@@ -56,11 +57,10 @@ class MainLogic {
             //这种情况说明是通过返回键来进行的跳转  
             this.$menu[level].setMenu(current);
         }
-        this.$loading = this.$loading || new Loading();
-        this.$loading.addLoading({ element: `#${this.$route.$elements[level]}`, content: _("加载页面中") });
+        this.$loading.addLoading({ element: "#" + this.$route.$elements[level], content: _("加载页面中") });
     }
 
-    //使用箭头函数这种写法会将this绑定至main对象(详情请关注@babel/plugin-proposal-class-properties插件)
+    //使用箭头函数这种写法会将this绑定至main对象(详情请关注babel-plugin-transform-class-properties插件)
     //等价于 this.afterRouting = this.afterRouting.bind(this);
     //如果不需要绑定this也可以使用原始的方法afterRouting(){}
     afterRouting = (page, level) => {
@@ -77,7 +77,7 @@ class MainLogic {
             .then(res => {
                 page.onDataBack(res);
                 this.$loading.removeLoading({
-                    element: `#${this.$route.$elements[level]}`
+                    element: "#" + this.$route.$elements[level]
                 });
             })
             .catch(err => {
@@ -106,11 +106,7 @@ class MainLogic {
             element: $("#menu-aside"),
             menus: moduleInfo.menus,
             onMenuChange: (lastPath, currentPath) => {
-                if (lastPath === currentPath) {
-                    this.$route.load(currentPath);
-                } else {
-                    this.$route.push(currentPath);
-                }
+                this.$route.push(currentPath);
             }
         });
     }
