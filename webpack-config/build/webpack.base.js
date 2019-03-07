@@ -3,19 +3,17 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //自动生成html
 const CopyWebpackPlugin = require('copy-webpack-plugin'); //将特定文件输出指定位置
-const es3ifyPlugin = require("es3ify-webpack-plugin");
 const HappyPack = require('happypack');
-const happyThreadPool = HappyPack.ThreadPool({
-    size: 4
-});
+const happyThreadPool = HappyPack.ThreadPool({ size: 4 });
 
 module.exports = {
     resolve: {
         extensions: ['.js', ".json"],
         alias: { //设置别名，方便引入文件
-            "@modules": path.join(__dirname, "../src/modules"),
+            "@utils": path.join(__dirname, "../src/assets/js/utils"),
             "@assets": path.join(__dirname, "../src/assets"),
-            "@utils": path.join(__dirname, "../src/assets/js/utils")
+            "@modules": path.join(__dirname, "../src/modules"),
+            "@components": path.join(__dirname, "../src/assets/components")
         },
         mainFields: ['browser', 'main']
     },
@@ -31,65 +29,85 @@ module.exports = {
         rules: [{
             enforce: 'pre', // ESLint 优先级高于其他 JS 相关的 loader
             test: /\.js$/,
-            exclude: /node_modules|assets/,
-            use: "eslint-loader"
+            use: "eslint-loader",
+            include: /src/
         }, {
             test: /\.js$/, //匹配所有.js文件
-            use: [{
-                loader: 'babel-loader'
-            }],
-            exclude: /node_modules/ //排除node_module下的所有文件
-        },
-        {
+            loader: 'HappyPack/loader?id=js',
+            include: /src/,
+            exclude: /static/ //排除node_module下的所有文件
+        }, {
+            test: /\.(html)$/, //处理html中的图片文件
+            loader: 'HappyPack/loader?id=html',
+            include: /src/ //排除node_module下的所有文件
+        }, {
             test: /\.css$/,
-            use: [{
+            loader: "HappyPack/loader?id=css"
+        }, {
+            test: /\.scss$/,
+            loader: "HappyPack/loader?id=scss",
+            include: /src/ //排除node_module下的所有文件
+        }, {
+            test: /\.(png|jpg|png|jpeg|bmp|webp|gif)$/, //处理css和js中的图片文件
+            loader: 'url-loader',
+            options: {
+                limit: 8,
+                name: 'assets/images/[name]_[hash:5].[ext]'
+            },
+            include: /src/ //排除node_module下的所有文件
+        }, { //处理字体文件
+            test: /\.(eot|woff2|woff|ttf|svg)/,
+            loader: 'url-loader',
+            options: {
+                name: 'assets/fonts/[name]_[hash:5].min.[ext]',
+                limit: 5000
+            },
+            include: /src/
+        }]
+    },
+    plugins: [
+        new HappyPack({
+            id: 'js',
+            loaders: [{
+                loader: 'babel-loader',
+                "query": {
+                    "cacheDirectory": "./node_modules/.cache_babel/"
+                }
+            }],
+            threadPool: happyThreadPool
+        }),
+        new HappyPack({
+            id: "html",
+            loaders: [{
+                loader: 'html-loader',
+                options: {
+                    attrs: ['img:src', 'img:data-src', 'audio:src'],
+                    minimize: true
+                }
+            }]
+        }),
+        new HappyPack({
+            id: "css",
+            loaders: [{
                 loader: 'style-loader' //生成的css插入到html
             }, {
                 loader: 'css-loader' //使js中能加载css
             }, {
                 loader: 'postcss-loader' //添加兼容性前缀
             }]
-        },
-        {
-            test: /\.scss$/,
-            use: [{
+        }),
+        new HappyPack({
+            id: "scss",
+            loaders: [{
                 loader: "style-loader" // creates style nodes from JS strings 
             }, {
                 loader: "css-loader" // translates CSS into CommonJS 
             }, {
                 loader: "fast-sass-loader" // compiles Sass to CSS 
-            }]
-        },
-        {
-            test: /\.(png|jpg|png|jpeg|bmp|webp|gif)$/, //处理css和js中的图片文件
-            loader: 'url-loader',
-            options: {
-                limit: 8,
-                name: 'assets/images/[name]_[hash:5].[ext]'
-            }
-        },
-        {
-            test: /\.(html)$/, //处理html中的图片文件
-            use: {
-                loader: 'html-loader',
-                options: {
-                    attrs: ['img:src', 'img:data-src', 'audio:src'],
-                    // minimize: true
-                }
-            }
-        },
-        { //处理字体文件
-            test: /\.(eot|woff2|woff|ttf|svg)/,
-            use: [{
-                loader: 'url-loader',
-                options: {
-                    name: 'assets/fonts/[name]_[hash:5].min.[ext]',
-                    limit: 5000
-                }
-            }]
-        }]
-    },
-    plugins: [
+            }],
+            verbose: true,
+            threadPool: happyThreadPool
+        }),
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery'
@@ -100,7 +118,6 @@ module.exports = {
             chunks: ['index'],
             inject: "body"
         }),
-        new es3ifyPlugin(),
         new CopyWebpackPlugin([{ //reference from：https://www.npmjs.com/package/copy-webpack-plugin
             from: './src/modules/**/!(login|index|quickset).html', //TO REPLACE
             to: './pages',

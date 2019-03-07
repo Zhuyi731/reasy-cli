@@ -35,7 +35,7 @@ export default [{
     }, {
         path: "/nest_router3",
         template: "nest_router3",
-        component: () => import( /* webpackChunkName: 'modules/modules2/module2_1/nest_router3/nest_router3'*/ "@modules/module2/module2_2/nest_router3/nest_router3.js")
+        component: () => import( /* webpackChunkName: 'modules/modules2/module2_2/nest_router3/nest_router3'*/ "@modules/module2/module2_2/nest_router3/nest_router3.js")
     }]
 }, {
     path: "/module3",

@@ -1,12 +1,9 @@
-import "es5-shim";
-import "babel-polyfill";
-import Promise from "promise-polyfill";
-import "@assets/scss/initial.scss";
+import "@babel/polyfill";
 import "@assets/scss/iconfont.scss";
-import "@assets/scss/ap.scss";
+import "@assets/scss/index.scss";
+import "@components/formComponents/lib";
+import "@components/css/component.scss";
 
-
-import "@assets/components/formComponents";
 import Loading from "@assets/components/loading/loading";
 import routerCfg from "../routerCfg";
 import moduleInfo from "../moduleInfo";
@@ -19,15 +16,16 @@ class MainLogic {
     //constructor用于初始化部分数据
     //在new MainLogic()这行代码执行时会执行constructor中的代码
     constructor() {
-        this.firstMenu = "/";
+        //需要先清空hash
+        this.firstMenu = "/module2_1";
         this.$menu = [];
         this.$loading = new Loading();
     }
- 
+
     init() {
         this.initGlobalVariables();
+        this.initMenu();
         this.initRouter();
-        this.initMenuLists();
 
         if (process.env.NODE_ENV == "development") { //开发环境下暴露最顶层引用,方便查看数据与调试
             top.window.main = this;
@@ -37,7 +35,6 @@ class MainLogic {
     // 导出全局变量
     initGlobalVariables() {
         window.G = {};
-        window.Promise = Promise;
     }
 
     //初始化路由
@@ -49,7 +46,8 @@ class MainLogic {
             beforeRouting: this.beforeRouting,
             afterRouting: this.afterRouting
         });
-        window.location.hash = this.firstMenu;
+        //然后再将hash重置为初始菜单
+        this.$route.push(this.firstMenu);
     }
 
     beforeRouting = (previous, current, level, previousLevel) => {
@@ -101,7 +99,7 @@ class MainLogic {
     }
 
     //初始化菜单
-    initMenuLists() {
+    initMenu() {
         this.$menu[0] = new Menu({
             element: $("#menu-aside"),
             menus: moduleInfo.menus,

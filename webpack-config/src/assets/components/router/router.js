@@ -37,8 +37,8 @@ export default class Router {
         //attributes initialize
         this.routerCfg = {}; //路由配置
         this.defaultPage = defaultPage;
-        this.current = "/"; //当前路由
-        this.previous = "/"; //前一个路由
+        this.current = window.location.hash.split("#").pop().split("?")[0]; //当前路由
+        this.previous = null; //前一个路由
         this.$currentPage = null; //前一个页面实例的引用
         this.$previousPage = null; //当前页面实例的应用
         this.historys = []; //历史记录
@@ -182,7 +182,14 @@ export default class Router {
 
     $beforeRouting(previous, current) {
         if (this.beforeRouting && typeof this.beforeRouting == "function") {
-            this.beforeRouting(previous, current, this.routerCfg[this.current].depth, this.routerCfg[this.previous].depth);
+            let currentDepth = this.routerCfg[this.current].depth,
+                previousDepth = 0;
+
+            if (this.routerCfg[this.previous]) {
+                previousDepth = this.routerCfg[this.previous].depth;
+            }
+
+            this.beforeRouting(previous, current, currentDepth, previousDepth);
         }
         //eslint-disable-next-line
         if (process && process.env && process.env.NODE_ENV == "development") {

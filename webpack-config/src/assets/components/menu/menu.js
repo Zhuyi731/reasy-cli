@@ -16,31 +16,57 @@ export default class Menu {
         let that = this;
         this.$element.on("click", ".menu-li", function(e) {
             e.stopPropagation();
-            that.changeActiveMenu($(this));
+            that.$changeActiveMenu($(this));
         });
     }
 
-    changeActiveMenu($menu) {
+    $changeActiveMenu($menu) {
         let menuClasses = $menu.attr("class").split(" "),
-            level = $menu.data("level");
+            level = $menu.data("level"),
+            originalPath = $(".menu-li.active").data("path"),
+            currentPath;
 
-        if (menuClasses.includes("menu-parent")) {
-            if (menuClasses.includes("menu-open")) { //开启的
-                $menu.removeClass("menu-open").find("ul").slideUp();
-            } else {
-                $(`#${this.guid} .menu-li-${level}.menu-open`).removeClass("menu-open").find(".menu-ul").slideUp();
-                $menu.addClass("menu-open").children(".menu-ul").slideDown();
-                this.changeActiveMenu($menu.children(".menu-ul").children(".menu-li").eq(0));
+        if (level == "1") { //一级菜单  
+            if (menuClasses.includes("menu-parent")) { //不是单个一级菜单
+                this.$toggleFirstClassMenu($menu, menuClasses); //展开或折叠一级菜单
+                return;
+            } else { //单个一级菜单
+                $(`#${this.guid} .menu-li.active`).removeClass("active");
+                $(`#${this.guid} .menu-li-1.menu-open`).removeClass("menu-open").children(".menu-ul").slideUp();
             }
-        } else {
-            $(`#${this.guid}  .menu-li-${level}.menu-open`).removeClass("menu-open").find("ul").slideUp();
-            let originalPath = $(".menu-li.active").data("path"),
-                currentPath = $menu.data("path");
-
+        } else { //点击的是二级菜单
             $(`#${this.guid} .menu-li.active`).removeClass("active");
-            $menu.addClass("active");
-            this.currentMenu = currentPath;
-            this.onMenuChange(originalPath, currentPath);
+        }
+
+        $menu.addClass("active");
+        currentPath = $menu.data("path");
+        this.currentMenu = currentPath;
+        this.onMenuChange(originalPath, currentPath);
+    }
+
+    $toggleFirstClassMenu($menu, menuClasses) {
+        //根据一级菜单展开情况，来展开或者折叠以及菜单
+        let originalPath = $(".menu-li.active").data("path"),
+            currentPath,
+            $activeMenu;
+        if (menuClasses.includes("menu-open")) { //原本就是展开的，需要折叠
+            $menu.removeClass("menu-open").children(".menu-ul").slideUp();
+        } else { //该菜单是折叠的，需要展开
+            if ($menu.find(".menu-li.active").length > 0) {
+                //说明之前这个菜单是折叠的，但是下面有活动的二级菜单
+                $menu.addClass("menu-open").children(".menu-ul").slideDown();
+            } else {
+                //说明是新点开了一个一级菜单
+                $(`#${this.guid} .menu-li.active`).removeClass("active");
+                $(`#${this.guid} .menu-li-1.menu-open`).removeClass("menu-open").children(".menu-ul").slideUp();
+                $menu.addClass("menu-open").children(".menu-ul").slideDown();
+                $activeMenu = $menu.find(".menu-li").eq(0);
+
+                $activeMenu.addClass("active");
+                currentPath = $activeMenu.data("path");
+                this.currentMenu = currentPath;
+                this.onMenuChange(originalPath, currentPath);
+            }
         }
     }
 
@@ -83,7 +109,7 @@ export default class Menu {
                 iconClassName = `menu-icon menu-icon-${depth} `,
                 liClassName = `menu-li menu-li-${depth}`,
                 dataPath = menu.path ? `data-path="${menu.path}"` : "";
-                // dataPath = "";
+            // dataPath = "";
             //添加类名
             iconClassName += menu.icon ? `icon-${menu.icon}` : "icon-empty";
             (index == 0 && depth == 1) && (liClassName += " menu-top");

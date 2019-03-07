@@ -1,7 +1,7 @@
 import BasePage from "@assets/baseClass/BasePage";
 import Menu from "@assets/components/menu/menu";
-import hljs from "highlight.js";
-import javascript from 'highlight.js/lib/languages/javascript';
+// import hljs from "highlight.js";
+// import javascript from 'highlight.js/lib/languages/javascript';
 import "./module2_2.scss";
 import 'highlight.js/styles/github.css';
 
@@ -11,11 +11,11 @@ export default class Page extends BasePage {
     }
 
     init() {
-        try {  //IE下不支持highlightjs渲染
-            hljs.registerLanguage('javascript', javascript);
-            hljs.highlightBlock($("pre code")[0]);
+        // try {  //IE下不支持highlightjs渲染
+        //     hljs.registerLanguage('javascript', javascript);
+        //     hljs.highlightBlock($("pre code")[0]);
 
-        } catch (e) {}
+        // } catch (e) {}
         this.$parent.$menu[1] = new Menu({
             element: $("#third-menu"),
             menus: [{

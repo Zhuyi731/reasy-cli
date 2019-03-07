@@ -1,6 +1,10 @@
 import FormPage from "@assets/baseClass/FormPage";
 import checkIsVoidIpMask from "@utils/checkIsVoildIpMask";
 import checkIPInSameSegment from "@utils/checkIPInSameSegment";
+import "@components/formComponents/BaseComponent";
+import "@components/formComponents/FormInput";
+import "@components/formComponents/FormSelect";
+import "@components/formComponents/ComponentManage";
 
 export default class Page extends FormPage {
     constructor() {

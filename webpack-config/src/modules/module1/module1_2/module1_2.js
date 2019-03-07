@@ -1,4 +1,6 @@
 import "./module1_2.scss";
+import "@components/formComponents/BaseComponent";
+import "@components/formComponents/FormList";
 import PureDisplayPage from "@assets/baseClass/PureDisplayPage";
 
 export default class Page extends PureDisplayPage {
