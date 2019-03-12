@@ -38,7 +38,11 @@ export default [{
         component: () => import( /* webpackChunkName: 'modules/modules2/module2_2/nest_router3/nest_router3'*/ "@modules/module2/module2_2/nest_router3/nest_router3.js")
     }]
 }, {
-    path: "/module3",
-    template: "module3",
-    component: () => import( /* webpackChunkName: 'modules/modules3/module3'*/ "@modules/module3/module3.js")
+    path: "/module3_1",
+    template: "module3_1",
+    component: () => import( /* webpackChunkName: 'modules/modules3/module3_1'*/ "@modules/module3/module3_1/module3_1.js")
+}, {
+    path: "/module_todo",
+    template: "module_todo",
+    component: () => import( /* webpackChunkName: 'modules/module_todo/module_todo'*/ "@modules/module_todo/module_todo.js")
 }];

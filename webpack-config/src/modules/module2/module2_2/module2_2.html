@@ -1,30 +1,5 @@
 <div class="main">
-    <div class="head">嵌套路由</div>
-    <div class="block">
-        <div class="line">嵌套路由配置同Vue一样，在路由配置中加入chidren属性</div>
-        <div class="line">当匹配到/module2_2/nest_router1时，加载对应配置的html与js</div>
-        <div class="line">
-            <pre><code>
-        [{
-            path: "/module2_2",
-            template: "module2_2",
-            component: () => import( /* webpackChunkName: 'modules/module2_2'*/ "@modules/module2/module2_2/module2_2.js"),
-            children: [{
-                path: "/nest_router1",
-                template: "nest_router1",
-                component: () => import( /* webpackChunkName: 'modules/module2_1/nest_router1/nest_router1'*/ "@modules/module2/module2_1/nest_router1/nest_router1.js")
-            }, {
-                path: "/nest_router2",
-                template: "nest_router2",
-                component: () => import( /* webpackChunkName: 'modules/module2_1/nest_router2/nest_router2'*/ "@modules/module2/module2_1/nest_router2/nest_router2.js")
-            }, {
-                path: "/nest_router3",
-                template: "nest_router3",
-                component: () => import( /* webpackChunkName: 'modules/module2_1/nest_router3/nest_router3'*/ "@modules/module2/module2_1/nest_router3/nest_router3.js")
-        }}]
-            </code></pre>
-        </div>
-    </div>
+    <div class="markdown"></div>
     <div class="block">
         <div id="third-menu"></div>
     </div>

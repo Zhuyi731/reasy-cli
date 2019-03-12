@@ -28,9 +28,15 @@ const productInfo = {
             title: "嵌套路由"
         }]
     }, {
-        title: "单个菜单",
+        title: "webpack配置",
         icon: "wuxupailie",
-        path: "/module3"
+        children: [{
+            path: "/module3_1",
+            title: "按需兼容IE8"
+        }]
+    }, {
+        title: "TODO",
+        path: "module_todo"
     }]
 };
 

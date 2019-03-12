@@ -1,4 +1,4 @@
-import FormPage from "@assets/baseClass/FormPage";
+import FormPage from "@page/FormPage";
 import checkIsVoidIpMask from "@utils/checkIsVoildIpMask";
 import checkIPInSameSegment from "@utils/checkIPInSameSegment";
 import "@components/formComponents/BaseComponent";

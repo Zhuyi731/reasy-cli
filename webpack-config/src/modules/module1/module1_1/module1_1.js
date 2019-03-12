@@ -1,6 +1,6 @@
 
 import "./module1_1.scss";
-import BasePage from "@assets/baseClass/BasePage";
+import BasePage from "@page/BasePage";
 
 export default class Page extends BasePage {
     constructor() {

@@ -1,15 +1,21 @@
 #third-menu {
-    ul {
+    .menu-ul {
         width: 600px;
 
-        li {
+        .menu-li {
             display: inline-block;
-            width: 200px;
+            width: 100px;
+            border: 1px solid #DCDFE6;
+            cursor: pointer;
+            border-radius: 4px;
+            overflow: hidden;
         }
 
         .menu-content {
             padding: 4px 10px;
             text-align: center;
+            height: 30px;
+            line-height: 30px;
         }
     }
 }
