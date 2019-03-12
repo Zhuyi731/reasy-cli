@@ -1,25 +1,47 @@
 /*eslint-disable*/
 const path = require("path");
 const fs = require("fs");
+const userConfig = require("../config/user.config");
 const merge = require("webpack-merge");
 const baseConfig = require("./webpack.base");
 const webpack = require("webpack");
+const mockServer = require("./mockServer/MockServer");
+
+let devServer;
+switch (userConfig.mock.type) {
+    case "yapi":
+        { //如果是ypai  ，则使用代理
+            devServer = {
+                proxy: {
+                    "**": {
+                        target: userConfig.mock.apiPrefix
+                    }
+                }
+            }
+        }
+        break;
+    case "local":
+        { //如果是本地调试，则用mockServer来接管webpack的dev server
+            mockServer.init();
+            devServer = {
+                before: mockServer.before
+            }
+        }
+        break;
+    default:
+        {
+            throw new Error("非法的mock.type配置");
+        }
+};
 
 module.exports = merge(baseConfig, {
     devtool: '#source-map',
-    devServer: {
-        before(app) {
-            app.post('/mock/**', (req, res) => {
-                //重定向到对应路径
-                res.redirect(`${req.originalUrl.split("?")[0]}.mock.json`);
-            });
-        }
-    },
+    devServer,
     plugins: [
         new webpack.DefinePlugin({
             'process.env': {
                 'NODE_ENV': JSON.stringify('development')
             }
-        }),
+        })
     ]
 });

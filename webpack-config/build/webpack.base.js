@@ -8,8 +8,12 @@ const happyThreadPool = HappyPack.ThreadPool({ size: 4 });
 
 module.exports = {
     resolve: {
+        modules: [
+            path.join(__dirname, "../node_modules")
+        ],
         extensions: ['.js', ".json"],
         alias: { //设置别名，方便引入文件
+            "@page": path.join(__dirname, "../src/assets/baseClass"),
             "@utils": path.join(__dirname, "../src/assets/js/utils"),
             "@assets": path.join(__dirname, "../src/assets"),
             "@modules": path.join(__dirname, "../src/modules"),
@@ -66,11 +70,22 @@ module.exports = {
         }]
     },
     plugins: [
+        //对于预打包的库，通过Manifest文件来加载至webpack    
+        new webpack.DllReferencePlugin({
+            manifest: require("./dll/dependencies-manifest.json"),
+            name: "dependencies",
+            sourceType: "window"
+        }),
+        new webpack.DllReferencePlugin({
+            manifest: require("./dll/polyfill-manifest.json"),
+            name: "polyfill",
+            sourceType: "window"
+        }),
         new HappyPack({
             id: 'js',
             loaders: [{
                 loader: 'babel-loader',
-                "query": {
+                query: {
                     "cacheDirectory": "./node_modules/.cache_babel/"
                 }
             }],
@@ -123,12 +138,20 @@ module.exports = {
             to: './pages',
             flatten: true
         }, {
-            from: './src/modules/**/*.mock.json',
+            from: './src/modules/**/*.mock.js',
             to: './mock',
             flatten: true
         }, {
             from: './src/static',
             to: './static'
+        }, {
+            from: './src/dll',
+            to: './dll'
+        }]),
+        new CopyWebpackPlugin([{ //reference from：https://www.npmjs.com/package/copy-webpack-plugin
+            from: './src/modules/**/*.md',
+            to: './markdown',
+            flatten: true
         }])
     ]
 }
