@@ -1,12 +1,23 @@
 {
     "presets": [
-        "es2015-loose"
+        ["env", {
+            "loose": true,
+            "useBuiltIns": "usage",
+            "targets": {
+                "ie": "6",
+                "chrome": "48",
+                "firefox": "48"
+            }
+        }]
     ],
     "plugins": [
+        ["transform-runtime", {
+            "corejs": true,
+            "helpers": true,
+            "regenerator": true,
+            "useESModules": false
+        }],
         "syntax-dynamic-import",
         "transform-class-properties"
-        // ,
-        // "transform-es3-property-literals",
-        // "transform-es3-member-expression-literals"
     ]
 }

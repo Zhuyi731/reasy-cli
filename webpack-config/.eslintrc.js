@@ -24,7 +24,8 @@ module.exports = {
         "Highcharts": true,
         "Highchart": true,
         "DEFINE": true,
-        "CONFIG": true
+        "CONFIG": true,
+        "Mock": true
     },
     "rules": {
         /*
