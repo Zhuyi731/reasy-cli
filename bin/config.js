@@ -10,6 +10,7 @@ const child_process = require("child_process");
 const configFileName = "user.config.js";
 let cwd = process.cwd();
 const args = process.argv;
+const debug = fasle;
 
 program
     .version(require('../package').version, '-v, --version')
@@ -39,7 +40,7 @@ function copyConfig() {
 
 function generateProject() {
     //首先将webpack配置移植过去
-    fo.copyDirSync(path.join(__dirname, "../webpack-config"), cwd, /node_modules|dist/);
+    fo.copyDirSync(path.join(__dirname, "../webpack-config"), cwd, debug ? /node_modules|dist/ : null);
 
     let config;
     try {
@@ -192,6 +193,8 @@ function log(msg) {
 
 program.parse(args);
 //DEBUG:
-cwd = path.join(__dirname, "../test");
-init();
+if (debug) {
+    cwd = path.join(__dirname, "../test");
+    init();
+}
 //DEBUG:

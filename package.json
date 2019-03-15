@@ -1,6 +1,6 @@
 {
     "name": "@reasy-team/r-cli",
-    "version": "0.0.2-Beta",
+    "version": "0.0.4-Beta",
     "description": "",
     "main": "index.js",
     "scripts": {
