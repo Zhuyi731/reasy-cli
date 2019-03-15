@@ -1,4 +1,4 @@
-import BasePage from "@assets/baseClass/BasePage";
+import BasePage from "@pages/BasePage";
 
 export default class Page extends BasePage {
     constructor() {

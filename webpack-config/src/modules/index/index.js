@@ -9,7 +9,7 @@ import routerCfg from "../routerCfg";
 import moduleInfo from "../moduleInfo";
 import Menu from "@assets/components/menu/menu";
 import Router from "@assets/components/router/router";
-import BasePage from "@assets/baseClass/BasePage";
+import BasePage from "@pages/BasePage";
 
 
 class MainLogic {
@@ -55,7 +55,8 @@ class MainLogic {
             //这种情况说明是通过返回键来进行的跳转  
             this.$menu[level].setMenu(current);
         }
-        this.$loading.addLoading({ element: "#" + this.$route.$elements[level], content: _("加载页面中") });
+
+        !this.$route.hasCache(current) && this.$loading.addLoading({ element: "#" + this.$route.$elements[level], content: _("加载页面中") });
     }
 
     //使用箭头函数这种写法会将this绑定至main对象(详情请关注babel-plugin-transform-class-properties插件)

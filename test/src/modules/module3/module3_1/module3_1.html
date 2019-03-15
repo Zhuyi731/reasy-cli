@@ -1,0 +1,37 @@
+<div class="main" id="module3_1">
+    <div class="head">IE8兼容</div>
+    <div class="block">
+        <div class="line">IE8兼容仅采用了babel进行兼容,并且做了按需加载兼容，避免全局污染</div>
+        <div class="line">按需兼容通过以下插件来实现</div>
+        <ul>
+            <li>babel-plugin-transform-runtime</li>
+            <li>babel-runtime</li>
+            <li>@babel-polyfill</li>
+            <li>babel-preset-env</li>
+        </ul>
+        <div class="line">原理：babel会自动检测代码中使用的新特性，通过指定需要兼容的浏览器版本，给予相关的polyfill</div> 
+        <div class="line">
+            <a href="https://babeljs.io/docs/en/babel-preset-env#usebuiltins">参考链接1</a>
+            <a href="https://babeljs.io/docs/en/babel-plugin-transform-runtime#docsNav">参考链接2</a>
+        </div>
+    </div>
+    <div class="block">
+        <div class="line">例如：创建一个test.js文件  在内部写入</div>
+        <div class="line"><pre><code>
+            var map = new Map();
+        </code></pre></div>
+        <div class="line">编译出来的文件:</div>
+        <div class="line">只引入了map的polyfill以及一个公共的polyfill (require(192)) </div>
+        <div class="line cap1"></div>
+    </div>
+    <div class="block">
+        <div class="line">现在添加一个Promise</div>
+        <div class="line"><pre><code>
+            var promise = new Promise();
+            var map = new Map();
+        </code></pre></div>
+        <div class="line">编译出来的文件:</div>
+        <div class="line">只多引入了一个Promise的polyfill </div>   
+        <div class="line cap2"></div>
+    </div>
+</div>

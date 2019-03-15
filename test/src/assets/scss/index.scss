@@ -1,0 +1,121 @@
+@import "./initial.scss";
+
+//主色调
+$mainColor:#F60;
+
+//内容框宽度
+$contentWidth:800px;
+$contentMinHeight:500px;
+$contentBorder: 1px solid #d5d5d5;
+$contentBorderRadius:4px;
+//侧边栏配置
+$asideWidth:180px;
+$asideBorder: 1px solid #d5d5d5;
+$asideBorderRaius:4px;
+
+body {
+    background: #fff;
+    min-width: 1200px;
+}
+
+.main-header {
+    height: 40px;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: $mainColor;
+
+    .head-logo {
+        background-size: contain;
+        display: block;
+        width: 106px;
+        height: 24px;
+        margin-left: 200px;
+        margin-top: 5px;
+    }
+}
+
+.main-container {
+    width: $contentWidth+$asideWidth+120px;
+    height: 100%;
+    min-height: 600px;
+    position: relative;
+    left: 0;
+    top: 0;
+    margin: 0 auto;
+    margin-top: 60px;
+    padding: 0;
+
+
+    .menu-aside {
+        width: $asideWidth;
+        float: left;
+        border: $asideBorder;
+        border-radius: $asideBorderRaius;
+        overflow: hidden;
+    }
+
+    .main-page {
+        display: block;
+        min-width: $contentWidth;
+        max-width: $contentWidth+70px;
+        margin-left: 40px;
+        background: #fff;
+        min-height: $contentMinHeight;
+        float: left;
+        border: $contentBorder;
+        border-radius: $contentBorderRadius;
+        overflow: hidden;
+    }
+}
+
+.main-page {
+    .head {
+        background: #eee;
+        height: 40px;
+        line-height: 40px;
+        padding-left: 20px;
+        font-size: 14px;
+        color: #666;
+        border-bottom: 1px solid #d5d5d5;
+    }
+
+    .block {
+        margin: 0 20px;
+        padding: 20px;
+        border-top: 1px solid #eee;
+    }
+
+    .block-first {
+        border-top: none;
+    }
+
+    .line {
+        font-size: 14px;
+        color: #333333;
+        padding: 4px 0;
+    }
+}
+
+.clearfix:after {
+    content: "";
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
+
+/**
+* 表单组件样式覆盖
+*/
+
+.control-wrap {
+    .form-title {
+        text-align: right;
+    }
+
+    .form-content {
+        width: 60%;
+    }
+}

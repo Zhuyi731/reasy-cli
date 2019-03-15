@@ -1,0 +1,55 @@
+<div class="main" id="module1_1">
+    <div class="head">基础页面 BasePage</div>
+    <div class="block-first">
+        <div class="life-cycle">页面生命周期:</div>
+        <pre class="js" id="page-life-cycle">
+        <code>
+    基础组件位于assets/baseClass/basePage.js 文件下
+    您可以通过修改此文件来定制特殊的生命周期
+
+    点击菜单，加载html
+        ||
+        \/
+    加载js，同时预加载数据
+        ||                          
+        \/       
+    beforeInit(lastPage) //初始化之前需要做的一些处理,接受一个参数,lastPage为上一个页面的模块引用
+        ||
+        \/
+      init()//页面初始化        
+        ||                           
+        \/
+    afterInit()//初始化之后做的一些操作
+        ||
+        \/
+    dataLoaded() //数据加载完成,在这里处理数据,该函数一定会在afterInit()之后执行，
+        ||        //即使在执行afterInit之前就已经请求到数据了
+        \/
+    destroy() //离开页面时触发
+
+
+    基础页面属性:
+    name:　(@string) 页面名称
+    description:(@string) 页面的简单描述
+    $parent: (@object) 父页面的一个引用,可以通过这个引用调取到MainLogic从而查看整个页面的所有信息，不建议操作该属性
+    timer : (@array || @object || @timer)  所有定时器如果放入timer中，则在页面离开时会自动清除  
+    timer格式:  1.array 多个定时器需要按顺序清除的情况 [timer1,timer2,timer3]  　 
+                2.object 多个定时器不需要按顺序清除的情况 {t1:timer1,t2:timer2}
+                3.timer   单个定时器情况，直接将this.timer 指向对应的定时器即可
+        </code>
+    </pre>
+    </div>
+    <div class="block">
+        <div class="line">定时器示例:在console中也会输出对应时间,离开页面后自动清除</div>
+        <div class="line timer1">timer1:0</div>
+        <div class="line timer2">timer2:100</div>
+    </div>
+    <div class="block">
+        <div class="line">自定义样式:请在模块根节点添加对应class或id，然后以此选择器作为包裹</div>
+        <pre class="css"><code>
+            #module1_1{
+                //这里面写当前页面的样式，避免全局污染
+            }
+        </code></pre>
+    </div>
+</div>

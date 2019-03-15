@@ -1,12 +1,19 @@
 {
-  "name": "reasy-cli",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+    "name": "@reasy-team/r-cli",
+    "version": "0.0.2-Beta",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bin": {
+        "r-cli": "./bin/config.js"
+    },
+    "dependencies": {
+        "chalk": "^2.4.2",
+        "commander": "^2.19.0"
+    }
 }
