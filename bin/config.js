@@ -10,7 +10,7 @@ const child_process = require("child_process");
 const configFileName = "user.config.js";
 let cwd = process.cwd();
 const args = process.argv;
-const debug = fasle;
+global.debug = false;
 
 program
     .version(require('../package').version, '-v, --version')
@@ -72,14 +72,14 @@ function createPages(config) {
     const TEMPLATE_DEST = "src/modules"
     for (prop in config.pages) {
         let template = config.pages[prop].template,
-            templateDirPath,
+            templateDirPath = path.join(__dirname, TEMPLATE_SRC, template),
             templateDestPath = path.join(cwd, TEMPLATE_DEST, prop);
 
         if (!fs.existsSync(templateDirPath)) {
             template = DEFAULT_TEMPLATE;
+            templateDirPath = path.join(__dirname, TEMPLATE_SRC, template);
         }
 
-        templateDirPath = path.join(__dirname, TEMPLATE_SRC, template);
 
         !fs.existsSync(templateDestPath) && fs.mkdirSync(templateDestPath);
         //拷贝js模板

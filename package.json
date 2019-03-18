@@ -1,13 +1,13 @@
 {
     "name": "@reasy-team/r-cli",
-    "version": "0.0.4-Beta",
+    "version": "0.0.7-Beta",
     "description": "",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
-    "author": "",
+    "author": "zhuyi",
     "license": "ISC",
     "bin": {
         "r-cli": "./bin/config.js"
@@ -17,3 +17,4 @@
         "commander": "^2.19.0"
     }
 }
+

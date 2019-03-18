@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin'); //自动生成html
 const CopyWebpackPlugin = require('copy-webpack-plugin'); //将特定文件输出指定位置
 const HappyPack = require('happypack');
 const happyThreadPool = HappyPack.ThreadPool({ size: 4 });
-const userConfig = require("config/user.config");
+const userConfig = require("../config/user.config");
 
 let webpackConfig = {
     resolve: {

@@ -1,10 +1,10 @@
 module.exports = {
-    url: "mock/xxx3",//拦截该请求
-    data: function(req,server){
+    url: "mock/xxx3", //拦截该请求
+    data: function(req, server) {
         let data = server.getFrom("ipStatus");
-        if(!data){
-            data = server.Mock({
-                "lanType|1": ["dhcp", "static"],//mock语法，返回数组中随机一个数
+        if (!data) {
+            data = Mock.mock({
+                "lanType|1": ["dhcp", "static"], //mock语法，返回数组中随机一个数
                 "lanIp": "@ip", //返回一个随机IP
                 "lanMask": "@ip",
                 "lanGw": "@ip",
@@ -15,4 +15,4 @@ module.exports = {
         }
         return data;
     }
-};  
+};

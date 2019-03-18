@@ -15,6 +15,7 @@ class MockServer {
 
     bindThis() {
         global.Mock = Mock;
+        this.Mock = Mock;
         this.add = this.add.bind(this);
         this.before = this.before.bind(this);
         this.change = this.change.bind(this);
